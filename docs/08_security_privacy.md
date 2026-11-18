@@ -22,3 +22,9 @@
 
 ## Production boundary
 This code must not be exposed to real contractor data, payment authorisation or public traffic until security review, validation gate and further controls pass. No credentials are checked into GitHub.
+
+## Evidence ingestion security boundary, development branch only
+
+The upload endpoint is disabled outside testing/development or when the explicit evidence preview flag is off. It requires a current tenant membership and project permission; claimed site IDs must belong to that project. The server checks file magic bytes against the declared purpose, limits bytes read into memory, computes SHA-256, uses a private S3-compatible bucket, writes originals with an object conditional and independently verifies their checksum. Downloads require the same tenant check and use attachment disposition and `nosniff`. PostgreSQL triggers reject evidence and acknowledgement UPDATE/DELETE. Client-provided capture dates are unverified metadata, not authoritative measurements.
+
+**Remaining important limits:** multipart request body size must additionally be capped at a reverse proxy; signature checks are not antivirus, full media validation or safe document parsing; object-lock and backup policies are not established; developer credentials have broad bucket rights; no production tenancy/security assessment or restore drill has occurred. This branch is unsuitable for permissioned customer evidence until approved.

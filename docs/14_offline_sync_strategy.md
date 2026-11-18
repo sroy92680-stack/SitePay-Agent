@@ -27,3 +27,9 @@ The authoritative PDF specifies durable photo and voice capture, device storage,
 
 ## Current implementation boundary
 Phase 2 backend is being developed on a gated branch. Frontend IndexedDB outbox, capture UI, browser service worker and storage-quota behaviour are **not yet implemented**. An accepted server acknowledgement is not equivalent to a complete, lossless offline mobile workflow. No permissioned customer material is included.
+
+## Backend implementation evidence, 18 November 2026
+
+The server now verifies original bytes, stores a private S3 object, inserts an immutable evidence record and records a separate accepted device operation in PostgreSQL. The device may query a prior acceptance with `GET /projects/{project_id}/sync/operations/{device_id}/{client_record_id}`. Duplicate upload retries return the original receipt. A conflicting client operation ID is rejected rather than silently overwriting an accepted source. An identical byte stream attributed to a different site or kind is rejected for review rather than automatically relabelled. A storage failure never produces a database acknowledgement. See GitHub Actions run 44327768382.
+
+**This is only the server half**. No browser IndexedDB capture queue, sync-conflict review interface, local deletion policy, mobile voice recorder, storage-quota test or failure-recovery exercise has passed. Users must not rely on this branch as a complete offline capture system.
