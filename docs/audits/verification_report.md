@@ -14,3 +14,27 @@
 | Production release and restored backup | Not implemented or tested | Phase 9 |
 
 No CI success may be read as a successful construction payment application. The readiness gate remains blocked. To update this file, record exact run IDs, test counts, reviewer, commit and environment.
+
+## Gated Phase 1 engineering verification, branch only
+
+| Check | GitHub result | Limit |
+|---|---|---|
+| JWT, role, tenant, project and site integration tests | Passed in run 44295897022 | Test-only SQLite database |
+| SQLite audit immutability and FK tests | Passed in run 44295897022 | Not a production permission audit |
+| PostgreSQL migration revision and audit immutability probe | Passed in run 44295897022 | Does not test every live API call against PostgreSQL |
+| Docker Compose syntax | Passed in run 44295897022 | No managed deployment |
+| API container build | Passed in run 44295897022 | Build only; not a running pilot |
+| Lint, Python syntax and source rules | Passed in run 44295897022 | Not business acceptance |
+
+See [the run](https://github.com/sroy92680-stack/SitePay-Agent/actions/runs/44295897022). Tests on the development branch are real. Their success cannot override the pending Phase 0 validation gate or certify the complete application.
+
+## Live-container end-to-end verification
+
+GitHub Actions run [44296887975](https://github.com/sroy92680-stack/SitePay-Agent/actions/runs/44296887975) completed successfully:
+- 31 Python unit/integration tests passed; 1 third-party deprecation warning remains.
+- Source rules and Ruff lint passed.
+- PostgreSQL migrated to version 0001, and live constraints and immutable audit triggers were verified.
+- Docker Compose built the API image, started PostgreSQL and the API, and executed a synthetic HTTP workflow.
+- Through live HTTP, registration, login, creating a project and site, listing projects and audit events passed.
+
+This is evidence for the **Phase 1 backend development branch only**. It does not verify construction evidence uploads, offline PWA, AI extraction, financial calculations, claims, a pilot, disaster recovery or production release.
