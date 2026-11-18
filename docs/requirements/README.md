@@ -1,24 +1,23 @@
-# Roadmap implementation register
+# Requirements and verification
 
-This master tracker was transcribed from the phase-by-phase tables on pages 13 through 27 of the authoritative **SitePay Agent Roadmap Version 2.0 (18 November 2026)**. It contains precisely 395 numbered file and folder deliverables. The `order`, path, phase and priority columns follow the PDF, without speculative changes.
+The authoritative PDF is *SitePay Agent: Project Roadmap, Build Plan and Operating Rules, Version 2.0*, 18 November 2026, including its Implementation Addendum. The PDF is the authority. This directory is its traceability index, not a replacement specification.
 
-## Status rules
+## Registries
+- `roadmap_inventory.csv` tracks all **395 numbered file/folder deliverables** from the phase tables on PDF pages 13 to 27. Each has source order, exact path, phase, priority, status, test reference and result columns.
+- `functional_requirements.csv` tracks **77 cross-cutting functional and governance controls** extracted for engineering traceability, including the addendum. These are a curated checklist rather than a claim that the PDF has exactly 77 requirements.
 
-- Not started: no implementation or test evidence
-- In progress: an implementation task is actively underway
-- Blocked: a named dependency is missing
-- Implemented: source exists, but tests and validation may still be outstanding
-- Tested: relevant tests were executed successfully, but acceptance review is pending
-- Verified complete: test evidence plus phase acceptance and reviewer sign-off exist
+## Meaning of each status
+- **Not started:** no implementation.
+- **In progress:** actively being developed and not complete.
+- **Blocked:** human evidence, approval or prerequisite missing.
+- **Implemented:** source exists, with no claim that all tests passed.
+- **Tested:** relevant automated or manual checks passed, but independent acceptance review is pending.
+- **Verified complete:** evidence is linked, tests passed and an authorised reviewer accepted the requirement.
 
-**Implementation existence is not product completion.** A file can be present while its phase remains blocked. The document only records source paths present at register-generation time. Files added later require a tracker update. No code, API, finance module, offline sync, commercial launch, pilot or deployed application is asserted to be finished simply because the row exists.
+A file's existence is not proof that its feature works. The product-validation gate is still **blocked**, regardless of which Phase 0 source documents are present.
 
-## Source requirements
-- The 395 file deliverables are tracked by `roadmap_inventory.csv`.
-- Functional, security, financial, human approval, AI and operational requirements must also be tracked, with source page, code reference, test and result, before being marked verified.
-- The Phase 0 gate register is `docs/21_product_validation_gate.md`.
-- No sample source documents or private pilot data should be committed to this public repository.
-- The implementation addendum introduces additional audit checks that remain subject to the same sign-off process.
+## Update protocol
+For every completed change, link the source file, test path, exact CI or manual result and acceptance decision to the corresponding rows. Update the development log and decisions. No unsupported status promotions; never fake a CI run or measured user result. Source/customer test documents belong in access-controlled private storage, not this public repository.
 
-## Current gate
-Phase 0 product validation is **blocked**. See GitHub issue #1. The project is not a finished application.
+## Automation
+`scripts/tests/test_requirement_inventory.py` guards against missing rows, broken phase boundaries, duplicate entries, absent implemented files, invalid statuses and unevidenced verified claims.
