@@ -6,7 +6,7 @@ from __future__ import annotations
 from collections.abc import Iterator
 from functools import lru_cache
 
-from sqlalchemy import Engine, create_engine
+from sqlalchemy import Engine, create_engine, event
 from sqlalchemy.orm import Session, sessionmaker
 
 from backend.app.config import get_settings
@@ -24,11 +24,26 @@ def get_engine() -> Engine:
         if configuration.database_url.startswith("sqlite+pysqlite:")
         else {}
     )
-    return create_engine(
+    engine = create_engine(
         configuration.database_url,
         pool_pre_ping=True,
         connect_args=connection_args,
     )
+    if connection_args:
+
+        @event.listens_for(engine, "connect")
+        def activate_sqlite_foreign_keys(connection: object, record: object) -> None:
+            """Enforce SQLite foreign key constraints per connection.
+
+            PostgreSQL enforces foreign keys without this development-only hook.
+            """
+            cursor = connection.cursor()
+            try:
+                cursor.execute("PRAGMA foreign_keys=ON")
+            finally:
+                cursor.close()
+
+    return engine
 
 
 def get_database_session() -> Iterator[Session]:
