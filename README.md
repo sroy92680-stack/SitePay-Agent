@@ -62,3 +62,9 @@ The `development/phase1-backend` branch adds the first working API: registration
 Run it only with synthetic test accounts. Installation, migration and local startup instructions are at [Environment setup](docs/26_environments_and_release_process.md). You must create an untracked `.env` with your own random credentials. The `/docs` endpoint describes the available API.
 
 **The Phase 1 phase-exit and Phase 0 gates have not been signed.** No file or test represents a completed AI agent, payment claim engine, offline mobile application or commercial release.
+
+## Gated Phase 2 evidence foundation
+
+The separate `development/phase2-evidence-foundation` branch builds on Phase 1 and adds a narrow, **working development-only** evidence-ingestion slice: source metadata, Alembic migration 0002, SHA-256 validation, private S3-compatible original storage, idempotent device acknowledgements, tenant-filtered metadata/download routes and tests against live containers. The API explicitly requires `SITEPAY_ENABLE_EVIDENCE_PREVIEW=true` **and** development/testing mode, so production use is disabled. Check [the Phase 2 strategy](docs/14_offline_sync_strategy.md), [security limitations](docs/08_security_privacy.md) and [CI evidence](docs/audits/verification_report.md).
+
+The frontend offline queue, photo/voice capture pages, automatic retry, conflict-resolution UI, parser and AI extraction workflows are **not implemented**. No current API source record proves any measured construction progress or claimable quantity. The Phase 0 validation and later phase exits remain blocked.

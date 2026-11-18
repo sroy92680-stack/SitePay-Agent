@@ -43,3 +43,13 @@ Complete real Phase 0 validation, sign the readiness and architecture decisions,
 - Verified follow-up GitHub Actions run [44296887975](https://github.com/sroy92680-stack/SitePay-Agent/actions/runs/44296887975) passed **31 Python tests**, PostgreSQL migration/constraint checks, Docker image build and the live HTTP smoke workflow.
 - Synthetic CI project data was destroyed through the container cleanup step. No production server was created or deployed.
 - Draft pull request #5 remains unmerged pending the Phase 0 product-validation and architecture decision gates.
+
+## 2026-11-18, Phase 2 evidence foundation
+
+- Created `development/phase2-evidence-foundation` stacked on Phase 1 without merging or declaring the PDF gate passed.
+- Committed `backend/app/models/evidence_model.py`, `sync_record_model.py`, migration 0002, file integrity and S3 storage services, source schemas and upload/list/download/sync acknowledgement routes.
+- Committed a real private S3-compatible developer server, bucket initialization through boto3, developer-only feature gate and live Docker integration workflow.
+- CI initially failed lint and infrastructure startup: official upstream MinIO/Quay images became unpullable; replaced with pinned maintained S3-compatible SILO and a Python bucket bootstrap. Fixed import formatting and original metadata conflict checks.
+- Validated safe duplicate retry, checksum equality, cross-tenant rejection, same-byte site mismatch, invalid file type, receipt query and atomic audit. Added failure injection proving unavailable storage produces no acknowledgement.
+- [Run 44327768382](https://github.com/sroy92680-stack/SitePay-Agent/actions/runs/44327768382) succeeded: **47 Python tests**, all 3 jobs successful, real PostgreSQL constraints and live S3 HTTP smoke.
+- Offline mobile outbox, capture UI, document parsers, OCR, speech transcription and the complete Phase 2 exit are still **not implemented or verified**. Product validation and scope freeze remain blocked.

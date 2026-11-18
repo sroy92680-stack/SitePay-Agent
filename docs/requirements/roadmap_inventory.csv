@@ -59,17 +59,17 @@ order,file_or_folder,phase,priority,status,test_reference,verification_result,la
 58,backend/app/api/site_routes.py,1,High,Tested,backend/tests/integration/test_health_and_roles.py; backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
 59,.github/pull_request_template.md,1,Medium,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
 60,backend/app/feature_flags.py,1,Medium,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-61,backend/app/models/evidence_model.py,2,Critical,Not started,,,
-62,backend/app/models/sync_record_model.py,2,Critical,Not started,,,
-63,backend/migrations/versions/0002_create_evidence_and_sync_tables.py,2,Critical,Not started,,,
-64,backend/app/schemas/evidence_schema.py,2,Critical,Not started,,,
-65,backend/app/schemas/sync_schema.py,2,Critical,Not started,,,
-66,backend/app/api/upload_routes.py,2,Critical,Not started,,,
+61,backend/app/models/evidence_model.py,2,Critical,Tested,backend/tests/integration/test_evidence_migration.py; scripts/verify_postgres_migration.py,"GitHub Actions 44327768382: 47 tests, PostgreSQL and live S3 smoke succeeded. No phase acceptance",2026-11-18
+62,backend/app/models/sync_record_model.py,2,Critical,Tested,backend/tests/integration/test_evidence_migration.py; scripts/verify_postgres_migration.py,"GitHub Actions 44327768382: 47 tests, PostgreSQL and live S3 smoke succeeded. No phase acceptance",2026-11-18
+63,backend/migrations/versions/0002_create_evidence_and_sync_tables.py,2,Critical,Tested,backend/tests/integration/test_evidence_migration.py; scripts/verify_postgres_migration.py,"GitHub Actions 44327768382: 47 tests, PostgreSQL and live S3 smoke succeeded. No phase acceptance",2026-11-18
+64,backend/app/schemas/evidence_schema.py,2,Critical,Tested,scripts/smoke_docker_evidence.py; backend/tests/integration/test_evidence_failure_handling.py,"GitHub Actions 44327768382: 47 tests, PostgreSQL and live S3 smoke succeeded. No phase acceptance",2026-11-18
+65,backend/app/schemas/sync_schema.py,2,Critical,Tested,scripts/smoke_docker_evidence.py; backend/tests/integration/test_evidence_failure_handling.py,"GitHub Actions 44327768382: 47 tests, PostgreSQL and live S3 smoke succeeded. No phase acceptance",2026-11-18
+66,backend/app/api/upload_routes.py,2,Critical,Tested,scripts/smoke_docker_evidence.py; backend/tests/integration/test_evidence_failure_handling.py,"GitHub Actions 44327768382: 47 tests, PostgreSQL and live S3 smoke succeeded. No phase acceptance",2026-11-18
 67,backend/app/api/photo_routes.py,2,Critical,Not started,,,
 68,backend/app/api/voice_note_routes.py,2,Critical,Not started,,,
-69,backend/app/api/sync_routes.py,2,Critical,Not started,,,
-70,backend/app/services/storage_service.py,2,Critical,Not started,,,
-71,backend/app/services/evidence_service.py,2,Critical,Not started,,,
+69,backend/app/api/sync_routes.py,2,Critical,Tested,scripts/smoke_docker_evidence.py; backend/tests/integration/test_evidence_failure_handling.py,"GitHub Actions 44327768382: 47 tests, PostgreSQL and live S3 smoke succeeded. No phase acceptance",2026-11-18
+70,backend/app/services/storage_service.py,2,Critical,Tested,scripts/smoke_docker_evidence.py; backend/tests/integration/test_evidence_failure_handling.py,"GitHub Actions 44327768382: 47 tests, PostgreSQL and live S3 smoke succeeded. No phase acceptance",2026-11-18
+71,backend/app/services/evidence_service.py,2,Critical,Tested,scripts/smoke_docker_evidence.py; backend/tests/integration/test_evidence_failure_handling.py,"GitHub Actions 44327768382: 47 tests, PostgreSQL and live S3 smoke succeeded. No phase acceptance",2026-11-18
 72,backend/app/services/sync_service.py,2,Critical,Not started,,,
 73,backend/app/ingestion/__init__.py,2,Critical,Not started,,,
 74,backend/app/ingestion/image_preprocessor.py,2,Critical,Not started,,,
@@ -92,15 +92,15 @@ order,file_or_folder,phase,priority,status,test_reference,verification_result,la
 91,frontend/src/components/PhotoCapture.tsx,2,Critical,Not started,,,
 92,frontend/src/components/VoiceRecorder.tsx,2,Critical,Not started,,,
 93,frontend/src/components/SyncStatusBanner.tsx,2,Critical,Not started,,,
-94,docs/14_offline_sync_strategy.md,2,High,Not started,,,
-95,backend/app/services/file_integrity_service.py,2,High,Not started,,,
+94,docs/14_offline_sync_strategy.md,2,High,Implemented,,"Development-only design, awaiting full offline implementation",2026-11-18
+95,backend/app/services/file_integrity_service.py,2,High,Tested,backend/tests/unit/test_file_integrity_service.py; scripts/smoke_docker_evidence.py,"GitHub Actions 44327768382: 47 tests, PostgreSQL and live S3 smoke succeeded. No phase acceptance",2026-11-18
 96,backend/app/ingestion/image_metadata_reader.py,2,High,Not started,,,
 97,backend/app/ingestion/language_detector.py,2,High,Not started,,,
 98,backend/app/ingestion/ocr_reader.py,2,High,Not started,,,
 99,backend/app/ingestion/pdf_parser.py,2,High,Not started,,,
 100,backend/tests/fixtures/sample_site_photo.jpg,2,High,Not started,,,
 101,backend/tests/fixtures/sample_voice_note_hindi.wav,2,High,Not started,,,
-102,backend/tests/unit/test_file_integrity_service.py,2,High,Not started,,,
+102,backend/tests/unit/test_file_integrity_service.py,2,High,Tested,backend/tests/unit/test_file_integrity_service.py; scripts/smoke_docker_evidence.py,"GitHub Actions 44327768382: 47 tests, PostgreSQL and live S3 smoke succeeded. No phase acceptance",2026-11-18
 103,frontend/public/manifest.json,2,High,Not started,,,
 104,frontend/src/styles/theme.css,2,High,Not started,,,
 105,frontend/src/i18n/en.json,2,High,Not started,,,

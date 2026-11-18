@@ -12,11 +12,11 @@ from backend.app.database import get_engine
 from backend.tests.conftest import registered_account
 
 
-def test_database_migrates_to_first_revision(client: TestClient) -> None:
+def test_database_migrates_to_latest_revision(client: TestClient) -> None:
     """A fresh migrated test database exposes the expected revision."""
     with get_engine().connect() as connection:
         revision = connection.execute(text("SELECT version_num FROM alembic_version")).scalar()
-    assert revision == "0001"
+    assert revision == "0002"
 
 
 def test_audit_update_and_delete_are_denied(client: TestClient) -> None:

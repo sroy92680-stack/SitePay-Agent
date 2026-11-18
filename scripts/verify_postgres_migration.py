@@ -13,7 +13,7 @@ from backend.app.database import get_engine
 
 REQUIRED_TABLES = {
     "users", "organizations", "memberships", "projects",
-    "sites", "audit_logs", "alembic_version",
+    "sites", "audit_logs", "evidence", "sync_records", "alembic_version",
 }
 
 
@@ -45,7 +45,7 @@ def verify_postgres_migration() -> None:
         raise AssertionError(f"Missing tables: {sorted(REQUIRED_TABLES - tables)}")
     with engine.connect() as connection:
         transaction = connection.begin()
-        if connection.scalar(text("SELECT version_num FROM alembic_version")) != "0001":
+        if connection.scalar(text("SELECT version_num FROM alembic_version")) != "0002":
             raise AssertionError("Wrong PostgreSQL migration revision")
         user_id, organization_id, audit_id = (str(uuid4()) for _ in range(3))
         try:
@@ -92,9 +92,50 @@ def verify_postgres_migration() -> None:
                 "VALUES(:id,'fake-user',:org,'owner','active')",
                 {"id": str(uuid4()), "org": organization_id},
             )
+            project_id, source_id, receipt_id = (str(uuid4()) for _ in range(3))
+            connection.execute(
+                text(
+                    "INSERT INTO projects(id,organization_id,name,country_pack,created_at)"
+                    " VALUES (:id,:org,'Synthetic project','IN',:now)"
+                ),
+                {"id": project_id, "org": organization_id, "now": datetime.now(UTC)},
+            )
+            connection.execute(
+                text(
+                    "INSERT INTO evidence(id,project_id,uploaded_by,kind,content_type,"
+                    "sha256,size_bytes,object_key,uploaded_at) VALUES"
+                    "(:id,:project,:user,'photo','image/png',:sha,64,:key,:now)"
+                ),
+                {
+                    "id": source_id, "project": project_id, "user": user_id,
+                    "sha": "1" * 64, "key": f"synthetic/{source_id}",
+                    "now": datetime.now(UTC),
+                },
+            )
+            connection.execute(
+                text(
+                    "INSERT INTO sync_records(id,project_id,user_id,evidence_id,"
+                    "device_id,client_record_id,sha256,accepted_at)"
+                    " VALUES(:id,:project,:user,:source,:device,:record,:sha,:now)"
+                ),
+                {
+                    "id": receipt_id, "project": project_id, "user": user_id,
+                    "source": source_id, "device": str(uuid4()), "record": str(uuid4()),
+                    "sha": "1" * 64, "now": datetime.now(UTC),
+                },
+            )
+            for table, row_id in (("evidence", source_id), ("sync_records", receipt_id)):
+                verify_rejection(
+                    connection,
+                    f"UPDATE {table} SET sha256=:sha WHERE id=:id",
+                    {"id": row_id, "sha": "2" * 64},
+                )
+                verify_rejection(
+                    connection, f"DELETE FROM {table} WHERE id=:id", {"id": row_id}
+                )
         finally:
             transaction.rollback()
-    print("PASS PostgreSQL migration, audit immutability and foreign key checks")
+    print("PASS PostgreSQL revision 0002, audit/evidence immutability and foreign keys")
 
 
 if __name__ == "__main__":
