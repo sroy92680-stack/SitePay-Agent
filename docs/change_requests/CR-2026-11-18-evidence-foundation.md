@@ -41,3 +41,7 @@ Do not downgrade production databases with evidence. Reverse API deployment by d
 
 ## Review and approval
 Engineering review pending. Product validation, permissioned pilot samples, threat review, cloud storage policy and release sign-off pending. **No gate has been silently passed.**
+
+## Container registry compatibility resolution
+
+The original planned developer object store used official MinIO images. GitHub Actions run 44326028722 proved that `quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z` rejects anonymous pulls (HTTP 401). No unverified third-party mirror will be used for production data. The local developer and CI stack now uses version-pinned, actively maintained `pgsty/silo` and `pgsty/mc` S3-compatible containers. The application depends on the S3 API rather than a proprietary MinIO interface, so this is a replaceable developer infrastructure component. Production storage provider, encryption, IAM isolation, retention, object lock and backup remain unapproved. Review the container source, licences and pinned release before any production decision.

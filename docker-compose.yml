@@ -14,7 +14,7 @@ services:
       retries: 10
 
   minio:
-    image: quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z
+    image: docker.io/pgsty/silo:RELEASE.2026-11-09T00-00-00Z
     command: server /data
     environment:
       MINIO_ROOT_USER: ${SITEPAY_OBJECT_STORAGE_ACCESS_KEY:?Set local storage access key}
@@ -23,7 +23,7 @@ services:
       - evidence_data:/data
 
   minio_init:
-    image: quay.io/minio/mc:latest
+    image: docker.io/pgsty/mc:RELEASE.2026-11-09T00-00-00Z
     depends_on:
       minio:
         condition: service_started
