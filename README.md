@@ -1,39 +1,56 @@
 # SitePay Agent
 
-An evidence-based construction progress and payment-claim intelligence platform for contractors, site engineers and project managers.
+Evidence-based construction site progress and payment-claim intelligence for small and medium contractors, site engineers, project managers and payment staff.
 
-**Current status: Phase 0 foundation. This repository is not yet a functioning construction payment application.**
-
-## Source of truth
-
-The authoritative specification is *SitePay Agent: Project Roadmap, Build Plan and Operating Rules, Version 2.0, 18 November 2026*, including the Implementation Addendum. It defines 395 globally ordered file/folder entries, 11 development phases (0 to 10), strict evidence and human-approval rules, and a mandatory product-validation gate.
+> **Current project status: Phase 0 engineering foundation on GitHub. The construction payment application is not implemented, tested end to end or deployed.** This repository is not yet ready to handle real customer claims.
 
 ## Product mission
+SitePay Agent connects site photographs, voice notes, drawings, Bill of Quantities items, measurements, contract terms, previous claims and certifications. It should surface missing or conflicting evidence, use deterministic quantity and financial rules to draft supported payment claims, and require qualified human review for consequential actions.
 
-- Capture site photos, voice notes, documents and measurements, including durable offline storage.
-- Link extracted facts to original source records, location, confidence and units.
-- Compare completed work with the Bill of Quantities, contract terms and previously claimed/certified quantities.
-- Flag missing evidence, duplicates, contradictions and unapproved extra work.
-- Calculate all financial amounts using deterministic, versioned decimal arithmetic, never model-generated final figures.
-- Draft progress reports and payment claims with a full calculation trace and human review/approval.
-- Track claim submission, certification, payment records, outstanding amounts and audit histories.
+The agent **never invents evidence or financial amounts, autonomously certifies work, authorises payment or submits a legally consequential claim**.
 
-## Strict engineering rules
+## Roadmap and implementation order
+The governing source is *SitePay Agent: Project Roadmap, Build Plan and Operating Rules, Version 2.0*, 18 November 2026, including its Implementation Addendum. It specifies 395 ordered file/folder deliverables across 11 phases (0 to 10), source ownership rules, acceptance gates, test standards and a mandatory pre-development validation stage.
 
-No invented evidence or financial figures, no autonomous approvals or payments, tenant-isolated access, protected originals, append-only audit, source-tagged code, meaningful tests, reproducible calculations and permissioned test data. Never commit API keys, .env files, private documents or real client records.
+- [395-file master inventory](docs/requirements/roadmap_inventory.csv) tracks source locations, priorities, phases and status.
+- [77 cross-cutting requirements](docs/requirements/functional_requirements.csv) track functional, security, financial, AI and operational controls.
+- [Product validation gate](docs/21_product_validation_gate.md) is blocked until customer interviews, observed claims and permissioned pilot evidence exist.
+- [Readiness audit](docs/audits/readiness_audit.md) records what can and cannot be verified.
+- [Architecture proposal](docs/04_architecture.md) and [open design conflicts](docs/audits/specification_conflicts.md) document decisions required before application work.
+- [Engineering rules](PROJECT_RULES.md) and [contributor guide](CONTRIBUTING.md) apply to every change.
 
-## Phase 0 work and blocker
+## Repository status (18 November 2026)
+Phase 0 source documentation and checking tools are committed directly to GitHub. **20 of 21 Phase 0 listed file deliverables exist.** The `LICENSE` file remains blocked because the owner has not selected distribution terms. Some Phase 0 deliverables are only drafts and have not passed their business acceptance gates. The early CI workflow is deliberately present to validate Phase 0 source rules.
 
-A Phase 0 local engineering package has been produced with project governance, source policy checks, architecture drafts, an issue/risk register, 395 file-level requirements and 77 cross-cutting functional requirements. **The local checks passed 13 tests and verified 34 text files against the repository policy. These results are local, not GitHub CI results.** The complete local package is available as a downloadable archive from the project execution conversation, not yet uploaded to this repository.
+Relevant GitHub issues:
+- [#1: Validate the product, pilot and architecture](https://github.com/sroy92680-stack/SitePay-Agent/issues/1)
+- [#2: Approve the canonical payment lifecycle](https://github.com/sroy92680-stack/SitePay-Agent/issues/2)
+- [#3: Confirm financial and India policy assumptions](https://github.com/sroy92680-stack/SitePay-Agent/issues/3)
+- [#4: Choose distribution licence](https://github.com/sroy92680-stack/SitePay-Agent/issues/4)
 
-The mandatory validation gate is not passed. It requires 5 to 10 real participant interviews, observation of a real payment claim, permissioned sample documents, pilot commitments, an approved scope and a signed architecture decision. See [Phase 0 validation issue](https://github.com/sroy92680-stack/SitePay-Agent/issues/1). Phase 1 application code must not be described as implemented until the gate is passed.
+## Reproduce the available Phase 0 checks
+Requires Python 3.12 or newer and a Git checkout of this repository. These commands run the **foundation checks**, not a functioning application.
 
-The original roadmap's claim lifecycle labels differ from the implementation addendum's labels. A canonical state machine requires explicit review before Phase 6.
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -e ".[dev]"
+python scripts/check_project_rules.py .
+python -m pytest -q scripts/tests
+ruff check scripts
+python -m compileall -q scripts
+```
 
-## Planned technology
+On Windows, activate with `.venv\Scripts\activate`. GitHub Actions runs the same checks automatically; inspect the [CI workflow and actual run history](https://github.com/sroy92680-stack/SitePay-Agent/actions).
 
-Python 3.12 / FastAPI, PostgreSQL, React / TypeScript Progressive Web App, private S3-compatible storage, durable device outbox, a constrained multimodal AI provider, deterministic Decimal financial engine, HTML-to-PDF, openpyxl, pytest, Vitest and Playwright.
+## Planned system architecture
+Python 3.12/FastAPI; PostgreSQL; React/TypeScript offline-capable Progressive Web App; protected S3-compatible original object storage; constrained, evaluated vision and language extraction; versioned Decimal financial calculations; HTML-to-PDF and openpyxl exports; append-only audit, tenant and role checks; pytest, Vitest, Playwright and golden AI evaluation. None of those runtime modules should be represented as operational until their respective phase tests and gates pass.
 
-## Important limitation
+## Privacy and security
+Never commit customer documents, site photos of real people, bank data, secrets, private keys, access tokens or populated `.env` files. Original evidence, financial results and approvals require immutable provenance and appropriate access. Public repository access is not permission to use construction project data.
 
-This repository currently does **not** contain a deployable application. Completion, production deployment, verified financial calculations, independent security audit and pilot outcomes must not be claimed before actual implementation and testing.
+## Completion standard
+A CI pass currently shows source-policy enforcement and register integrity only. It **does not** mean authentication, offline capture, finance, claim approvals, AI extraction, deployment or pilot acceptance passed. The project remains incomplete until the documented phase exits and final readiness gate pass.
+
+## Licensing
+No source-code licence has been granted. The roadmap owner must choose and authorise distribution terms before a `LICENSE` file is added. See issue #4.
