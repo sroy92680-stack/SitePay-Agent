@@ -66,3 +66,11 @@ def test_functional_control_register_is_complete() -> None:
         assert row["roadmap_page"].startswith("PDF page ")
         assert row["status"] in ALLOWED_STATUSES
         assert row["status"] != "Verified complete" or row["verification_result"]
+
+def test_tested_rows_have_test_and_execution_evidence() -> None:
+    """Reject test-status promotion without a source and verification record."""
+    rows = read_csv(ROOT / "docs/requirements/roadmap_inventory.csv")
+    for row in rows:
+        if row["status"] in {"Tested", "Verified complete"}:
+            assert row["test_reference"].strip(), row["file_or_folder"]
+            assert row["verification_result"].strip(), row["file_or_folder"]

@@ -20,43 +20,43 @@ order,file_or_folder,phase,priority,status,test_reference,verification_result,la
 19,docs/13_risk_register.md,0,Medium,Implemented,,,
 20,.editorconfig,0,Low,Implemented,,,
 21,CHANGELOG.md,0,Low,Implemented,,,
-22,backend/app/__init__.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-23,backend/app/config.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-24,backend/app/database.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-25,backend/app/errors.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-26,backend/app/dependencies.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-27,backend/app/main.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-28,backend/app/models/__init__.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-29,backend/app/models/base_model.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-30,backend/app/models/user_model.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-31,backend/app/models/organization_model.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-32,backend/app/models/membership_model.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-33,backend/app/models/project_model.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-34,backend/app/models/audit_log_model.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-35,backend/migrations/env.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-36,backend/migrations/versions/0001_create_core_and_audit_tables.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-37,backend/app/schemas/__init__.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-38,backend/app/schemas/auth_schema.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-39,backend/app/schemas/project_schema.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-40,backend/app/api/__init__.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-41,backend/app/api/auth_routes.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-42,backend/app/api/project_routes.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-43,backend/app/services/__init__.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-44,backend/app/services/auth_service.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-45,backend/app/services/audit_service.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-46,backend/tests/conftest.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-47,backend/tests/integration/test_auth_flow.py,1,Critical,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
+22,backend/app/__init__.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+23,backend/app/config.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+24,backend/app/database.py,1,Critical,Tested,backend/tests/integration/test_migration_security.py; scripts/verify_postgres_migration.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+25,backend/app/errors.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+26,backend/app/dependencies.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+27,backend/app/main.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+28,backend/app/models/__init__.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+29,backend/app/models/base_model.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+30,backend/app/models/user_model.py,1,Critical,Tested,backend/tests/integration/test_auth_flow.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+31,backend/app/models/organization_model.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+32,backend/app/models/membership_model.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+33,backend/app/models/project_model.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+34,backend/app/models/audit_log_model.py,1,Critical,Tested,backend/tests/integration/test_migration_security.py; scripts/verify_postgres_migration.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+35,backend/migrations/env.py,1,Critical,Tested,backend/tests/integration/test_migration_security.py; scripts/verify_postgres_migration.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+36,backend/migrations/versions/0001_create_core_and_audit_tables.py,1,Critical,Tested,backend/tests/integration/test_migration_security.py; scripts/verify_postgres_migration.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+37,backend/app/schemas/__init__.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+38,backend/app/schemas/auth_schema.py,1,Critical,Tested,backend/tests/integration/test_auth_flow.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+39,backend/app/schemas/project_schema.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+40,backend/app/api/__init__.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+41,backend/app/api/auth_routes.py,1,Critical,Tested,backend/tests/integration/test_auth_flow.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+42,backend/app/api/project_routes.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+43,backend/app/services/__init__.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+44,backend/app/services/auth_service.py,1,Critical,Tested,backend/tests/integration/test_auth_flow.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+45,backend/app/services/audit_service.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+46,backend/tests/conftest.py,1,Critical,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+47,backend/tests/integration/test_auth_flow.py,1,Critical,Tested,backend/tests/integration/test_auth_flow.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
 48,docker-compose.yml,1,High,Tested,.github/workflows/continuous_integration.yml,GitHub Actions run 44295897022 succeeded; phase acceptance not signed,2026-11-18
 49,docs/05_data_model.md,1,High,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
 50,docs/08_security_privacy.md,1,High,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
 51,docs/09_testing_plan.md,1,High,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
 52,docs/26_environments_and_release_process.md,1,High,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
 53,.github/workflows/continuous_integration.yml,1,High,Tested,backend/tests/integration,GitHub Actions run 44295897022 succeeded; phase acceptance not signed,2026-11-18
-54,backend/app/logging_setup.py,1,High,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-55,backend/app/models/site_model.py,1,High,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-56,backend/app/api/health_routes.py,1,High,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-57,backend/app/api/organization_routes.py,1,High,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
-58,backend/app/api/site_routes.py,1,High,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
+54,backend/app/logging_setup.py,1,High,Tested,backend/tests/integration/test_health_and_roles.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+55,backend/app/models/site_model.py,1,High,Tested,backend/tests/integration/test_health_and_roles.py; backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+56,backend/app/api/health_routes.py,1,High,Tested,backend/tests/integration/test_health_and_roles.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+57,backend/app/api/organization_routes.py,1,High,Tested,backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
+58,backend/app/api/site_routes.py,1,High,Tested,backend/tests/integration/test_health_and_roles.py; backend/tests/integration/test_project_tenancy.py,"GitHub Actions run 44295897022: tests, syntax and Ruff passed; no owner phase approval",2026-11-18
 59,.github/pull_request_template.md,1,Medium,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
 60,backend/app/feature_flags.py,1,Medium,Implemented,,Source exists on review branch; phase acceptance not signed,2026-11-18
 61,backend/app/models/evidence_model.py,2,Critical,Not started,,,
