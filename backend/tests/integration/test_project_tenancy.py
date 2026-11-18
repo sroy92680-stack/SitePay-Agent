@@ -158,3 +158,15 @@ def test_revoked_membership_cannot_keep_reading_with_old_token(client: TestClien
             {"id": invited.json()["id"]},
         )
     assert client.get(f"/projects/{project['id']}", headers=worker_headers).status_code == 404
+
+
+def test_evidence_preview_disabled_without_explicit_opt_in(client: TestClient) -> None:
+    """The gated evidence feature must not silently activate on a test deployment."""
+
+    account = registered_account(client, "preview_disabled@example.com")
+    headers = authentication_headers(account)
+    response = client.get(
+        "/projects/unknown-project/evidence", headers=headers
+    )
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Evidence ingestion is not enabled"

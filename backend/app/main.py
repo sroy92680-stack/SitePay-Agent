@@ -14,6 +14,8 @@ from backend.app.api import (
     auth_routes,
     health_routes,
     organization_routes,
+    sync_routes,
+    upload_routes,
     project_routes,
     site_routes,
 )
@@ -58,6 +60,8 @@ def create_application() -> FastAPI:
     application.include_router(project_routes.router)
     application.include_router(site_routes.router)
     application.include_router(health_routes.router)
+    application.include_router(upload_routes.router)
+    application.include_router(sync_routes.router)
     install_error_handlers(application)
     return application
 

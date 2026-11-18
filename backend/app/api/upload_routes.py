@@ -7,17 +7,19 @@ import os
 from datetime import datetime
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, Response, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, Response, UploadFile
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from backend.app.config import get_settings
 from backend.app.database import get_database_session
 from backend.app.dependencies import get_current_user, require_project_membership
+from backend.app.models.evidence_model import Evidence
 from backend.app.models.user_model import User
-from backend.app.schemas.evidence_schema import EvidenceReceipt, EvidenceResponse
+from backend.app.schemas.evidence_schema import EvidenceListResponse, EvidenceReceipt, EvidenceResponse
 from backend.app.services.evidence_service import accept_original
 from backend.app.services.file_integrity_service import MAX_ORIGINAL_BYTES, validate_original
-from backend.app.services.storage_service import StorageUnavailable
+from backend.app.services.storage_service import StorageUnavailable, read_original
 
 router = APIRouter(prefix="/projects/{project_id}/evidence", tags=["evidence"])
 EVIDENCE_WRITER_ROLES = frozenset({"owner", "project_manager", "site_engineer", "worker"})
@@ -80,4 +82,78 @@ async def upload_original(
         client_record_id=str(client_record_id),
         reused_original=reused,
         accepted_at=record.accepted_at,
+    )
+
+
+@router.get("", response_model=EvidenceListResponse)
+def list_project_evidence(
+    project_id: str,
+    offset: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=100),
+    user: User = Depends(get_current_user),
+    session: Session = Depends(get_database_session),
+) -> EvidenceListResponse:
+    """Read only accepted immutable evidence for one authorised project."""
+
+    require_evidence_preview()
+    require_project_membership(session, user.id, project_id)
+    evidence = session.scalars(
+        select(Evidence)
+        .where(Evidence.project_id == project_id)
+        .order_by(Evidence.uploaded_at.desc(), Evidence.id)
+        .offset(offset)
+        .limit(limit)
+    ).all()
+    return EvidenceListResponse(
+        items=[EvidenceResponse.model_validate(item) for item in evidence]
+    )
+
+
+@router.get("/{evidence_id}", response_model=EvidenceResponse)
+def get_evidence_metadata(
+    project_id: str,
+    evidence_id: str,
+    user: User = Depends(get_current_user),
+    session: Session = Depends(get_database_session),
+) -> EvidenceResponse:
+    """Reject guessed cross-project IDs even for valid signed users."""
+
+    require_evidence_preview()
+    require_project_membership(session, user.id, project_id)
+    evidence = session.scalar(
+        select(Evidence).where(Evidence.id == evidence_id, Evidence.project_id == project_id)
+    )
+    if evidence is None:
+        raise HTTPException(404, "Evidence not found")
+    return EvidenceResponse.model_validate(evidence)
+
+
+@router.get("/{evidence_id}/content")
+def download_original(
+    project_id: str,
+    evidence_id: str,
+    user: User = Depends(get_current_user),
+    session: Session = Depends(get_database_session),
+) -> Response:
+    """Return verified original bytes as an attachment, never inline active content."""
+
+    require_evidence_preview()
+    require_project_membership(session, user.id, project_id)
+    evidence = session.scalar(
+        select(Evidence).where(Evidence.id == evidence_id, Evidence.project_id == project_id)
+    )
+    if evidence is None:
+        raise HTTPException(404, "Evidence not found")
+    try:
+        content = read_original(evidence.object_key, evidence.sha256, evidence.size_bytes)
+    except StorageUnavailable as error:
+        raise HTTPException(503, str(error)) from error
+    return Response(
+        content=content,
+        media_type=evidence.content_type,
+        headers={
+            "Cache-Control": "private, no-store",
+            "X-Content-Type-Options": "nosniff",
+            "Content-Disposition": f'attachment; filename="evidence-{evidence.id}"',
+        },
     )
