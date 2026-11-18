@@ -44,6 +44,11 @@ def upgrade() -> None:
             sa.ForeignKey("organizations.id", ondelete="RESTRICT"), nullable=False,
         ),
         sa.Column("role", sa.String(32), nullable=False),
+        sa.Column("status", sa.String(16), nullable=False, server_default="active"),
+        sa.CheckConstraint(
+            "status IN ('active', 'pending')",
+            name="ck_memberships_status",
+        ),
         sa.UniqueConstraint("user_id", "organization_id", name="uq_membership_user_org"),
         sa.CheckConstraint(
             "role IN ('owner', 'project_manager', 'site_engineer', 'accounts', 'worker')",

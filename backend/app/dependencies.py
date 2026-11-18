@@ -66,7 +66,7 @@ def require_organization_membership(
             Membership.organization_id == organization_id,
         )
     )
-    if membership is None:
+    if membership is None or membership.status != "active":
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Organization not found")
     if allowed_roles is not None and membership.role not in allowed_roles:
         raise HTTPException(status.HTTP_403_FORBIDDEN, "Insufficient project permission")
@@ -86,7 +86,11 @@ def require_project_membership(
     project = session.scalar(
         select(Project)
         .join(Membership, Project.organization_id == Membership.organization_id)
-        .where(Project.id == project_id, Membership.user_id == user_id)
+        .where(
+            Project.id == project_id,
+            Membership.user_id == user_id,
+            Membership.status == "active",
+        )
     )
     if project is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Project not found")

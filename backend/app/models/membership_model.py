@@ -28,3 +28,4 @@ class Membership(BaseModel):
         nullable=False, index=True
     )
     role: Mapped[str] = mapped_column(String(32), nullable=False)
+    status: Mapped[str] = mapped_column(String(16), nullable=False, default="active")

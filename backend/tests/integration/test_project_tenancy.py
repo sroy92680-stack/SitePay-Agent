@@ -75,6 +75,18 @@ def test_worker_role_cannot_create_project_or_site(client: TestClient) -> None:
         json={"email": worker["user"]["email"], "role": "worker"},
     )
     assert add.status_code == 201, add.text
+    assert add.json()["status"] == "pending"
+    pending = client.get("/organizations/invitations/pending", headers=worker_headers)
+    assert pending.status_code == 200
+    assert len(pending.json()) == 1
+    assert client.get("/projects", headers=worker_headers).json() == []
+    acceptance = client.post(
+        f"/organizations/{owner['organization_id']}/invitations/accept",
+        headers=worker_headers,
+    )
+    assert acceptance.status_code == 200
+    assert acceptance.json()["status"] == "active"
+    assert client.get("/organizations/invitations/pending", headers=worker_headers).json() == []
     project = client.post(
         "/projects",
         headers=owner_headers,

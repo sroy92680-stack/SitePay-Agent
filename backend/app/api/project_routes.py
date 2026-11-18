@@ -58,7 +58,7 @@ def list_projects(
     projects = session.scalars(
         select(Project)
         .join(Membership, Membership.organization_id == Project.organization_id)
-        .where(Membership.user_id == user.id)
+        .where(Membership.user_id == user.id, Membership.status == "active")
         .order_by(Project.created_at, Project.id)
     ).all()
     return [ProjectResponse.model_validate(project) for project in projects]

@@ -58,7 +58,7 @@ def list_organizations(
     organizations = session.scalars(
         select(Organization)
         .join(Membership, Organization.id == Membership.organization_id)
-        .where(Membership.user_id == user.id)
+        .where(Membership.user_id == user.id, Membership.status == "active")
         .order_by(Organization.name, Organization.id)
     ).all()
     return [OrganizationResponse.model_validate(organization) for organization in organizations]
@@ -91,7 +91,8 @@ def add_member(
     if existing:
         raise HTTPException(status.HTTP_409_CONFLICT, "Membership already exists")
     membership = Membership(
-        user_id=invited_user.id, organization_id=organization_id, role=request.role
+        user_id=invited_user.id, organization_id=organization_id, role=request.role,
+        status="pending",
     )
     session.add(membership)
     session.flush()
@@ -102,7 +103,7 @@ def add_member(
         action="organization.member_added",
         target_type="membership",
         target_id=membership.id,
-        value_after={"user_id": invited_user.id, "role": membership.role},
+        value_after={"user_id": invited_user.id, "role": membership.role, "status": "pending"},
     )
     session.commit()
     return MembershipResponse.model_validate(membership)
@@ -138,3 +139,47 @@ def list_audit_events(
         }
         for event in events
     ]
+
+@router.get("/invitations/pending", response_model=list[MembershipResponse])
+def list_pending_invitations(
+    user: User = Depends(get_current_user),
+    session: Session = Depends(get_database_session),
+) -> list[MembershipResponse]:
+    """Show pending tenant memberships to the invited account only."""
+    invitations = session.scalars(
+        select(Membership)
+        .where(Membership.user_id == user.id, Membership.status == "pending")
+        .order_by(Membership.organization_id)
+    ).all()
+    return [MembershipResponse.model_validate(item) for item in invitations]
+
+
+@router.post("/{organization_id}/invitations/accept", response_model=MembershipResponse)
+def accept_invitation(
+    organization_id: str,
+    user: User = Depends(get_current_user),
+    session: Session = Depends(get_database_session),
+) -> MembershipResponse:
+    """Activate an invited membership only after the recipient accepts it."""
+    membership = session.scalar(
+        select(Membership).where(
+            Membership.user_id == user.id,
+            Membership.organization_id == organization_id,
+            Membership.status == "pending",
+        )
+    )
+    if membership is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Pending invitation not found")
+    membership.status = "active"
+    record_audit(
+        session,
+        actor_user_id=user.id,
+        organization_id=organization_id,
+        action="organization.invitation_accepted",
+        target_type="membership",
+        target_id=membership.id,
+        value_before={"status": "pending"},
+        value_after={"status": "active"},
+    )
+    session.commit()
+    return MembershipResponse.model_validate(membership)

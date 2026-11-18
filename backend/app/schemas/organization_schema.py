@@ -41,3 +41,4 @@ class MembershipResponse(BaseModel):
     user_id: str
     organization_id: str
     role: str
+    status: str
