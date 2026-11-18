@@ -13,7 +13,7 @@ from backend.app.database import get_engine
 
 REQUIRED_TABLES = {
     "users", "organizations", "memberships", "projects",
-    "sites", "audit_logs", "alembic_version",
+    "sites", "audit_logs", "evidence", "sync_records", "alembic_version",
 }
 
 
@@ -45,7 +45,7 @@ def verify_postgres_migration() -> None:
         raise AssertionError(f"Missing tables: {sorted(REQUIRED_TABLES - tables)}")
     with engine.connect() as connection:
         transaction = connection.begin()
-        if connection.scalar(text("SELECT version_num FROM alembic_version")) != "0001":
+        if connection.scalar(text("SELECT version_num FROM alembic_version")) != "0002":
             raise AssertionError("Wrong PostgreSQL migration revision")
         user_id, organization_id, audit_id = (str(uuid4()) for _ in range(3))
         try:
