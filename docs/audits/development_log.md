@@ -35,3 +35,11 @@ Complete real Phase 0 validation, sign the readiness and architecture decisions,
 - GitHub Actions `44295897022`: **success** for Python tests, lint, syntax, full policy check, PostgreSQL migration/constraints, Docker configuration and API image build.
 - Complete Phase 1 file list exists in this **unmerged development branch**, but the phase exit remains **blocked** by missing real product validation, architecture sign-off and approved business scope.
 - No upload, AI extraction, finance, claim, or mobile PWA functionality has been represented as working. No production deployment performed.
+
+## 2026-11-18, container integration hardening
+
+- Added a real HTTP smoke workflow that builds the backend container, runs Alembic against a live PostgreSQL service, starts the API, registers a synthetic account, signs in, creates a project and site, and checks the tenant audit trail.
+- Initial CI run 44296682000 failed. Python lint detected an unused retry counter, and the synthetic test account used an email domain rejected by validation. These were corrected in commit adde243.
+- Verified follow-up GitHub Actions run [44296887975](https://github.com/sroy92680-stack/SitePay-Agent/actions/runs/44296887975) passed **31 Python tests**, PostgreSQL migration/constraint checks, Docker image build and the live HTTP smoke workflow.
+- Synthetic CI project data was destroyed through the container cleanup step. No production server was created or deployed.
+- Draft pull request #5 remains unmerged pending the Phase 0 product-validation and architecture decision gates.

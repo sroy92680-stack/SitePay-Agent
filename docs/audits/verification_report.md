@@ -27,3 +27,14 @@ No CI success may be read as a successful construction payment application. The 
 | Lint, Python syntax and source rules | Passed in run 44295897022 | Not business acceptance |
 
 See [the run](https://github.com/sroy92680-stack/SitePay-Agent/actions/runs/44295897022). Tests on the development branch are real. Their success cannot override the pending Phase 0 validation gate or certify the complete application.
+
+## Live-container end-to-end verification
+
+GitHub Actions run [44296887975](https://github.com/sroy92680-stack/SitePay-Agent/actions/runs/44296887975) completed successfully:
+- 31 Python unit/integration tests passed; 1 third-party deprecation warning remains.
+- Source rules and Ruff lint passed.
+- PostgreSQL migrated to version 0001, and live constraints and immutable audit triggers were verified.
+- Docker Compose built the API image, started PostgreSQL and the API, and executed a synthetic HTTP workflow.
+- Through live HTTP, registration, login, creating a project and site, listing projects and audit events passed.
+
+This is evidence for the **Phase 1 backend development branch only**. It does not verify construction evidence uploads, offline PWA, AI extraction, financial calculations, claims, a pilot, disaster recovery or production release.

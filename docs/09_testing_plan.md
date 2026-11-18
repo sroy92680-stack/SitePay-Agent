@@ -15,3 +15,7 @@ Browser and mobile testing, production authorization review, workload and backup
 
 ## Local commands
 Run `python -m pip install -e ".[dev]"`, `python -m pytest -q`, `ruff check backend scripts` and `python scripts/check_project_rules.py .`.
+
+## Container end-to-end test
+
+The `docker_configuration` CI job starts disposable PostgreSQL and API containers, applies the Alembic migration, runs `python -m scripts.smoke_docker_api`, and removes the containers and volumes. This proves the synthetic registration-to-project workflow runs in the actual Docker image. The first complete pass was GitHub run 44296887975 on 18 November 2026.
