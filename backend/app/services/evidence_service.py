@@ -56,6 +56,8 @@ def accept_original(
             existing = session.get(Evidence, previous.evidence_id)
             if existing is None:
                 raise HTTPException(503, "Evidence acknowledgement is inconsistent")
+            if existing.kind != kind or existing.site_id != site_id:
+                raise HTTPException(409, "Device operation source metadata conflicts")
             read_original(existing.object_key, existing.sha256, existing.size_bytes)
             return existing, previous, True
         existing = session.scalar(
@@ -65,6 +67,8 @@ def accept_original(
         )
         reused_original = existing is not None
         if existing:
+            if existing.kind != kind or existing.site_id != site_id:
+                raise HTTPException(409, "Original already linked to different site or kind")
             read_original(existing.object_key, existing.sha256, existing.size_bytes)
         else:
             key = store_original(

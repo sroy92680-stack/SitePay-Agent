@@ -141,6 +141,13 @@ def verify_evidence_workflow() -> None:
     second = {**fields, "device_id": str(uuid4()), "client_record_id": str(uuid4())}
     status, deduplicated = upload(project["id"], token, second, first)
     assert status == 200 and deduplicated["evidence"]["id"] == source["id"]
+    same_bytes_elsewhere = {**second, "client_record_id": str(uuid4()), "site_id": str(uuid4())}
+    assert upload(project["id"], token, same_bytes_elsewhere, first)[0] == 404
+    _, second_site = request_json(
+        f"/projects/{project['id']}/sites", {"name": "Second synthetic block"}, token
+    )
+    conflicting_site = {**second, "client_record_id": str(uuid4()), "site_id": second_site["id"]}
+    assert upload(project["id"], token, conflicting_site, first)[0] == 409
     status, stored = request_json(f"/projects/{project['id']}/evidence", token=token)
     assert status == 200 and len(stored["items"]) == 1
     status, acknowledgement = request_json(

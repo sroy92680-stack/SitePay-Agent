@@ -40,9 +40,8 @@ def load_storage_config() -> StorageConfig:
         raise StorageUnavailable("Private evidence storage is not configured")
     if not endpoint.startswith(("http://", "https://")):
         raise StorageUnavailable("Invalid private object-storage endpoint")
-    if os.getenv("SITEPAY_ENVIRONMENT", "development") in {"staging", "production"} and not endpoint.startswith(
-        "https://"
-    ):
+    environment = os.getenv("SITEPAY_ENVIRONMENT", "development")
+    if environment in {"staging", "production"} and not endpoint.startswith("https://"):
         raise StorageUnavailable("TLS is required for production storage")
     return StorageConfig(bucket, endpoint, access_key, secret_key)
 
