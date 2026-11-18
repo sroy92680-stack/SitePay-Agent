@@ -67,6 +67,9 @@ jobs:
     env:
       SITEPAY_DB_PASSWORD: ci-test-only-password
       SITEPAY_JWT_SECRET: ci-test-signing-secret-not-for-production-2026
+      SITEPAY_OBJECT_STORAGE_ACCESS_KEY: sitepay_ci_storage
+      SITEPAY_OBJECT_STORAGE_SECRET_KEY: ci-only-evidence-storage-password-1234
+      SITEPAY_ENABLE_EVIDENCE_PREVIEW: "true"
     steps:
       - name: Check out repository
         uses: actions/checkout@v4

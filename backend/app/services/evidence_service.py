@@ -11,9 +11,9 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from backend.app.models.evidence_model import Evidence
+from backend.app.models.project_model import Project
 from backend.app.models.site_model import Site
 from backend.app.models.sync_record_model import SyncRecord
-from backend.app.models.project_model import Project
 from backend.app.models.user_model import User
 from backend.app.services.audit_service import record_audit
 from backend.app.services.file_integrity_service import ValidatedOriginal

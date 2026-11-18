@@ -11,4 +11,7 @@ from backend.app.models.site_model import Site
 from backend.app.models.sync_record_model import SyncRecord
 from backend.app.models.user_model import User
 
-__all__ = ["AuditLog", "BaseModel", "Evidence", "Membership", "Organization", "Project", "Site", "SyncRecord", "User"]
+__all__ = [
+    "AuditLog", "BaseModel", "Evidence", "Membership", "Organization", "Project",
+    "Site", "SyncRecord", "User",
+]

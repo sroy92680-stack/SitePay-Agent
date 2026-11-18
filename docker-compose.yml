@@ -13,6 +13,30 @@ services:
       timeout: 5s
       retries: 10
 
+  minio:
+    image: quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z
+    command: server /data
+    environment:
+      MINIO_ROOT_USER: ${SITEPAY_OBJECT_STORAGE_ACCESS_KEY:?Set local storage access key}
+      MINIO_ROOT_PASSWORD: ${SITEPAY_OBJECT_STORAGE_SECRET_KEY:?Set local storage secret}
+    volumes:
+      - evidence_data:/data
+
+  minio_init:
+    image: quay.io/minio/mc:latest
+    depends_on:
+      minio:
+        condition: service_started
+    environment:
+      STORAGE_USER: ${SITEPAY_OBJECT_STORAGE_ACCESS_KEY:?Set local storage access key}
+      STORAGE_PASSWORD: ${SITEPAY_OBJECT_STORAGE_SECRET_KEY:?Set local storage secret}
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+      until mc alias set private http://minio:9000 "$STORAGE_USER" "$STORAGE_PASSWORD";
+      do sleep 2; done;
+      mc mb --ignore-existing private/sitepay-evidence;
+      mc anonymous set none private/sitepay-evidence;
+
   api:
     build:
       context: .
@@ -23,12 +47,20 @@ services:
       SITEPAY_JWT_SECRET: ${SITEPAY_JWT_SECRET:?Set a random JWT signing secret}
       SITEPAY_JWT_MINUTES: "30"
       SITEPAY_CORS_ORIGINS: http://localhost:5173
+      SITEPAY_ENABLE_EVIDENCE_PREVIEW: ${SITEPAY_ENABLE_EVIDENCE_PREVIEW:-false}
+      SITEPAY_OBJECT_STORAGE_ENDPOINT: http://minio:9000
+      SITEPAY_OBJECT_STORAGE_BUCKET: sitepay-evidence
+      SITEPAY_OBJECT_STORAGE_ACCESS_KEY: ${SITEPAY_OBJECT_STORAGE_ACCESS_KEY:?Set local storage access key}
+      SITEPAY_OBJECT_STORAGE_SECRET_KEY: ${SITEPAY_OBJECT_STORAGE_SECRET_KEY:?Set local storage secret}
     ports:
       - "127.0.0.1:8000:8000"
     depends_on:
       postgres:
         condition: service_healthy
+      minio_init:
+        condition: service_completed_successfully
     restart: "no"
 
 volumes:
   postgres_data:
+  evidence_data:
