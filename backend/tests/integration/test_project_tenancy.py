@@ -124,3 +124,37 @@ def test_decimal_finance_input_must_not_be_float(client: TestClient) -> None:
     )
     assert good.status_code == 201, good.text
     assert good.json()["contract_value"] == "1000.10"
+
+def test_revoked_membership_cannot_keep_reading_with_old_token(client: TestClient) -> None:
+    """Always recheck active tenancy even when the access token remains valid."""
+    from sqlalchemy import text
+
+    from backend.app.database import get_engine
+
+    owner = registered_account(client, "revocation_owner@example.com")
+    worker = registered_account(client, "revocation_worker@example.com")
+    owner_headers = authentication_headers(owner)
+    worker_headers = authentication_headers(worker)
+    invited = client.post(
+        f"/organizations/{owner['organization_id']}/members",
+        headers=owner_headers,
+        json={"email": worker["user"]["email"], "role": "worker"},
+    )
+    assert invited.status_code == 201
+    accepted = client.post(
+        f"/organizations/{owner['organization_id']}/invitations/accept",
+        headers=worker_headers,
+    )
+    assert accepted.status_code == 200
+    project = client.post(
+        "/projects",
+        headers=owner_headers,
+        json={"organization_id": owner["organization_id"], "name": "Restricted project"},
+    ).json()
+    assert client.get(f"/projects/{project['id']}", headers=worker_headers).status_code == 200
+    with get_engine().begin() as connection:
+        connection.execute(
+            text("UPDATE memberships SET status='pending' WHERE id=:id"),
+            {"id": invited.json()["id"]},
+        )
+    assert client.get(f"/projects/{project['id']}", headers=worker_headers).status_code == 404

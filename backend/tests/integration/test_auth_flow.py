@@ -66,3 +66,29 @@ def test_validation_does_not_echo_password(client: TestClient) -> None:
     )
     assert response.status_code == 422
     assert password not in response.text
+
+def test_expired_access_token_is_rejected(client: TestClient) -> None:
+    """A valid signature cannot override an expired access period."""
+    from datetime import UTC, datetime, timedelta
+
+    import jwt
+
+    from backend.app.config import get_settings
+
+    account = registered_account(client, "expired@example.com")
+    settings = get_settings()
+    expired = datetime.now(UTC) - timedelta(minutes=1)
+    token = jwt.encode(
+        {
+            "sub": account["user"]["id"],
+            "iss": settings.jwt_issuer,
+            "aud": settings.jwt_audience,
+            "iat": expired - timedelta(minutes=10),
+            "exp": expired,
+            "type": "access",
+        },
+        settings.jwt_secret,
+        algorithm="HS256",
+    )
+    response = client.get("/auth/me", headers={"Authorization": f"Bearer {token}"})
+    assert response.status_code == 401

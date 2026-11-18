@@ -2,7 +2,7 @@
 
 Evidence-based construction site progress and payment-claim intelligence for small and medium contractors, site engineers, project managers and payment staff.
 
-> **Current project status: Phase 0 engineering foundation on GitHub. The construction payment application is not implemented, tested end to end or deployed.** This repository is not yet ready to handle real customer claims.
+> **Branch status: Phase 1 backend under development and tested in CI. The Phase 0 product-validation gate is still blocked, and the construction payment application is not completed or deployed.** This branch must not be merged or treated as production-ready without explicit gate approval.
 
 ## Product mission
 SitePay Agent connects site photographs, voice notes, drawings, Bill of Quantities items, measurements, contract terms, previous claims and certifications. It should surface missing or conflicting evidence, use deterministic quantity and financial rules to draft supported payment claims, and require qualified human review for consequential actions.
@@ -20,7 +20,7 @@ The governing source is *SitePay Agent: Project Roadmap, Build Plan and Operatin
 - [Engineering rules](PROJECT_RULES.md) and [contributor guide](CONTRIBUTING.md) apply to every change.
 
 ## Repository status (18 November 2026)
-Phase 0 source documentation and checking tools are committed directly to GitHub. **20 of 21 Phase 0 listed file deliverables exist.** The `LICENSE` file remains blocked because the owner has not selected distribution terms. Some Phase 0 deliverables are only drafts and have not passed their business acceptance gates. The early CI workflow is deliberately present to validate Phase 0 source rules.
+Phase 0 source documentation and checking tools are committed directly to GitHub. On the gated `development/phase1-backend` branch, Python/FastAPI endpoints and migrations are being built and tested, with no deployment or business acceptance claimed. **20 of 21 Phase 0 listed file deliverables exist.** The `LICENSE` file remains blocked because the owner has not selected distribution terms. Some Phase 0 deliverables are only drafts and have not passed their business acceptance gates. The early CI workflow is deliberately present to validate Phase 0 source rules.
 
 Relevant GitHub issues:
 - [#1: Validate the product, pilot and architecture](https://github.com/sroy92680-stack/SitePay-Agent/issues/1)
@@ -54,3 +54,11 @@ A CI pass currently shows source-policy enforcement and register integrity only.
 
 ## Licensing
 No source-code licence has been granted. The roadmap owner must choose and authorise distribution terms before a `LICENSE` file is added. See issue #4.
+
+## Backend development branch
+
+The `development/phase1-backend` branch adds the first working API: registration, sign-in, JWT authentication, owner-reviewed membership invitations, tenant-scoped projects, site records and immutable audit logging. It provides a versioned Alembic migration, development Docker Compose and automated SQLite integration tests, plus separate PostgreSQL migration and container-build jobs.
+
+Run it only with synthetic test accounts. Installation, migration and local startup instructions are at [Environment setup](docs/26_environments_and_release_process.md). You must create an untracked `.env` with your own random credentials. The `/docs` endpoint describes the available API.
+
+**The Phase 1 phase-exit and Phase 0 gates have not been signed.** No file or test represents a completed AI agent, payment claim engine, offline mobile application or commercial release.
