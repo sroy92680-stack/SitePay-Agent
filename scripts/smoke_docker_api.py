@@ -46,7 +46,7 @@ def require_ready() -> None:
 
     Fail after a bounded number of connection attempts.
     """
-    for attempt in range(30):
+    for _attempt in range(30):
         try:
             status, response = request_json("/health/ready")
             if status == 200 and response == {"status": "ready"}:
@@ -63,7 +63,7 @@ def verify_smoke_workflow() -> None:
     All generated identifiers are CI-only and the database is disposed after CI.
     """
     require_ready()
-    email = f"ci-{uuid4()}@example.invalid"
+    email = f"ci-{uuid4()}@example.com"
     password = secrets.token_urlsafe(24)
     status, account = request_json(
         "/auth/register",
