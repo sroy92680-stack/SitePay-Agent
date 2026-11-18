@@ -23,3 +23,15 @@
 
 ### Next dependency
 Complete real Phase 0 validation, sign the readiness and architecture decisions, then implement Phase 1 in order. No automatic continuation is scheduled from this conversation.
+
+## 2026-11-18, gated Phase 1 backend development branch
+
+- Created `development/phase1-backend` from main without overriding the Phase 0 gate.
+- Implemented FastAPI authentication, Argon2 credential hashing, validated JWTs, users, organisations and pending membership acceptance.
+- Added projects, sites, role-based access, tenant filtering, confidential input validation and scoped audit history.
+- Added Alembic revision 0001 with PostgreSQL/SQLite audit immutability triggers and DB foreign keys.
+- Added Dockerfile, local Compose environment, health probes and Phase 1 environment, security, data model and testing documents.
+- Integration tests cover sign-in, expired tokens, role restrictions, membership revocation, another-tenant project IDs, migrations, Decimal contracts and audit immutability.
+- GitHub Actions `44295897022`: **success** for Python tests, lint, syntax, full policy check, PostgreSQL migration/constraints, Docker configuration and API image build.
+- Complete Phase 1 file list exists in this **unmerged development branch**, but the phase exit remains **blocked** by missing real product validation, architecture sign-off and approved business scope.
+- No upload, AI extraction, finance, claim, or mobile PWA functionality has been represented as working. No production deployment performed.
