@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: sitepay
+      POSTGRES_USER: sitepay
+      POSTGRES_PASSWORD: ${SITEPAY_DB_PASSWORD:?Set a unique development database password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sitepay -d sitepay"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      SITEPAY_ENVIRONMENT: development
+      SITEPAY_DATABASE_URL: postgresql+psycopg://sitepay:${SITEPAY_DB_PASSWORD:?Set password}@postgres:5432/sitepay
+      SITEPAY_JWT_SECRET: ${SITEPAY_JWT_SECRET:?Set a random JWT signing secret}
+      SITEPAY_JWT_MINUTES: "30"
+      SITEPAY_CORS_ORIGINS: http://localhost:5173
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+volumes:
+  postgres_data:
