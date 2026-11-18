@@ -12,7 +12,6 @@ import boto3
 from botocore.config import Config
 from botocore.exceptions import BotoCoreError, ClientError
 
-from backend.app.config import get_settings
 from backend.app.services.file_integrity_service import MAX_ORIGINAL_BYTES
 
 
@@ -41,7 +40,7 @@ def load_storage_config() -> StorageConfig:
         raise StorageUnavailable("Private evidence storage is not configured")
     if not endpoint.startswith(("http://", "https://")):
         raise StorageUnavailable("Invalid private object-storage endpoint")
-    if get_settings().environment in {"staging", "production"} and not endpoint.startswith(
+    if os.getenv("SITEPAY_ENVIRONMENT", "development") in {"staging", "production"} and not endpoint.startswith(
         "https://"
     ):
         raise StorageUnavailable("TLS is required for production storage")

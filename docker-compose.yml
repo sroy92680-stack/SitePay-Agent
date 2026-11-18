@@ -23,20 +23,19 @@ services:
       - evidence_data:/data
 
   minio_init:
-    image: docker.io/pgsty/mc:RELEASE.2026-11-09T00-00-00Z
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: ["python", "-m", "backend.app.commands.init_storage"]
     depends_on:
       minio:
         condition: service_started
     environment:
-      STORAGE_USER: ${SITEPAY_OBJECT_STORAGE_ACCESS_KEY:?Set local storage access key}
-      STORAGE_PASSWORD: ${SITEPAY_OBJECT_STORAGE_SECRET_KEY:?Set local storage secret}
-    entrypoint: ["/bin/sh", "-c"]
-    command: >
-      until mc alias set private http://minio:9000 "$STORAGE_USER" "$STORAGE_PASSWORD";
-      do sleep 2; done;
-      mc mb --ignore-existing private/sitepay-evidence;
-      mc anonymous set none private/sitepay-evidence;
-
+      SITEPAY_ENVIRONMENT: development
+      SITEPAY_OBJECT_STORAGE_ENDPOINT: http://minio:9000
+      SITEPAY_OBJECT_STORAGE_BUCKET: sitepay-evidence
+      SITEPAY_OBJECT_STORAGE_ACCESS_KEY: ${SITEPAY_OBJECT_STORAGE_ACCESS_KEY:?Set local storage access key}
+      SITEPAY_OBJECT_STORAGE_SECRET_KEY: ${SITEPAY_OBJECT_STORAGE_SECRET_KEY:?Set local storage secret}
   api:
     build:
       context: .

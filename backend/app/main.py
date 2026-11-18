@@ -14,10 +14,10 @@ from backend.app.api import (
     auth_routes,
     health_routes,
     organization_routes,
-    sync_routes,
-    upload_routes,
     project_routes,
     site_routes,
+    sync_routes,
+    upload_routes,
 )
 from backend.app.config import get_settings
 from backend.app.errors import install_error_handlers
