@@ -85,6 +85,8 @@ jobs:
         run: docker compose up -d api
       - name: Verify real HTTP workflow
         run: python -m scripts.smoke_docker_api
+      - name: Verify live evidence and storage workflow
+        run: python -m scripts.smoke_docker_evidence
       - name: Show container logs on failure
         if: failure()
         run: docker compose logs --no-color --tail=100 api postgres
