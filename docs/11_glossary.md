@@ -1,0 +1,25 @@
+# Glossary
+
+- **Bill of Quantities (BOQ):** Contract schedule of work items with units, planned quantities and rates.
+- **Claim line:** One quantity and amount proposed for a specific Bill of Quantities item in a payment claim.
+- **Certified quantity:** Quantity accepted by the appropriate client or certifier, which can differ from the claimed quantity.
+- **Measurement record:** Observed or extracted physical quantity with mandatory unit, location, supporting evidence and review status.
+- **Evidence:** An immutable photo, voice note, drawing, bill or measurement attachment, with source and provenance.
+- **Variation:** Possible work outside the original contract scope requiring supporting instruction and explicit approval before claim inclusion.
+- **Retention:** Contract-dependent amount withheld against a specified portion of payments.
+- **Advance recovery:** Amount recovered from a previous contract advance, calculated under agreed terms.
+- **Cumulative quantity:** Quantity previously recognised plus the current period's quantity under a stated ledger basis.
+- **Remaining contract quantity:** Approved contract quantity, including authorised variations, less applicable previously recognised quantity.
+- **Calculation trace:** Inputs, source references, rule/engine versions and intermediate steps explaining the financial result.
+- **Confidence score:** Calibrated uncertainty indicator for an AI-extracted fact, not a substitute for evidence or engineering approval.
+- **Golden evaluation set:** Permitted, representative, labelled test cases used to evaluate extraction and workflow accuracy.
+- **Tenant:** Separate customer organisation whose project and billing data must remain isolated.
+- **Role-based access control (RBAC):** Authorisation based on explicitly assigned organisation and project permissions.
+- **Idempotency key:** Identifier ensuring retries of one submission do not produce duplicate logical records.
+- **Content fingerprint:** Cryptographic file hash used to detect identical bytes, not to prove two site observations describe the same work.
+- **Offline outbox:** Durable local store retaining pending client operations until a validated server acknowledgement.
+- **Progressive Web App (PWA):** Installable web application with service worker support and offline caching.
+- **Optical Character Recognition (OCR):** Extraction of text from image or scanned document with source and uncertainty.
+- **Recovery Time Objective (RTO):** Target maximum time to restore service after a failure.
+- **Recovery Point Objective (RPO):** Target maximum acceptable interval of recoverable data loss.
+- **Audit log:** Append-only record of who performed what action, when and why.
