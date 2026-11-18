@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from sqlalchemy import MetaData
@@ -19,7 +19,7 @@ def create_identifier() -> str:
 def utc_timestamp() -> datetime:
     """Create an aware UTC timestamp for persisted audit metadata."""
 
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class BaseModel(DeclarativeBase):

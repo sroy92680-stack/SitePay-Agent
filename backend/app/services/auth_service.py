@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import jwt
 from argon2 import PasswordHasher
@@ -90,7 +90,7 @@ def create_access_token(user_id: str) -> str:
     Only the server may issue tokens; membership roles are rechecked in the DB.
     """
     configuration = get_settings()
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     payload = {
         "sub": user_id,
         "iss": configuration.jwt_issuer,

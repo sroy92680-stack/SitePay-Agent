@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, JSON, String, event
+from sqlalchemy import JSON, DateTime, ForeignKey, String, event
 from sqlalchemy.orm import Mapped, mapped_column
 
 from backend.app.models.base_model import BaseModel, create_identifier, utc_timestamp
